@@ -18,7 +18,6 @@ import tensorflow_datasets as tfds
 #from efficient_kan.kan import KAN # importing KAN class
 from KANLinear import KAN
 from make_data_set import PairedMNISTTFDSDataset
-from TfdsDataset import TfdsDataset
 import pickle
 import random
 
@@ -34,7 +33,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # input dimension: 28 * 28
 # compressed_dimension: 64
 # output_dimension: 28 * 28
-model = KAN([28 * 28, 128, 64, 128, 28 * 28])
+model = KAN([28 * 28,256, 128, 64, 128,256, 28 * 28])
 model.to(device)
 
 # load test data set

@@ -22,7 +22,6 @@ import tensorflow_datasets as tfds
 #from efficient_kan.kan import KAN # importing KAN class
 from KANLinear import KAN
 from make_data_set import PairedMNISTTFDSDataset
-from TfdsDataset import TfdsDataset
 
 # for normalization
 transform = transforms.Compose([
@@ -58,23 +57,25 @@ valloader   = DataLoader(val_dataset, batch_size=64, shuffle=False)
 
 
 # define KAN model
-model = KAN([28 * 28, 128, 64, 128, 28 * 28])
+model = KAN([28 * 28,256, 128, 64, 128,256, 28 * 28])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 model.to(device)
 
 
-optimizer = optim.AdamW(model.parameters(), lr=1e-2, weight_decay=1e-4) # define optimizer
+optimizer = optim.AdamW(model.parameters(), lr=1e-3, weight_decay=1e-6) # define optimizer
 scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.8) # change learning
 
 
 # number of epochs
-epochs = 15
+epochs = 5
 
 # Define loss
 #criterion = nn.MSELoss() # regression
-criterion = CombinedMSESSIMLoss(mse_weight=1.0, ssim_weight=0.0)
+
+
+criterion = CombinedMSESSIMLoss(mse_weight=0.7, ssim_weight=0.0, epi_weight=0.3, psnr_weight=0.0)
 
 
 for epoch in range(epochs):
